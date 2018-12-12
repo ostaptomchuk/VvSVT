@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+	 <title>LAB 4</title>
+	 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+     <meta charset="utf-8"/>
+  </head>
+     <body>
+             <div class="container">
+                  <h1>Bookmarks Manager</h1>
+	             <div class="row">
+		           <div class="col-xs-12 col-md-8">
+		                 <table id="bookmarks" class="table table-striped">
+		                   <tr>
+		                       <th>ID</th>
+		                       <th>Name</th>
+		                       <th>Description</th>
+		                       <th>Link</th>
+						       <th>Delete</th>
+		                    </tr>
+                         </table>		  
+                   </div>
+	         <div class="col-xs-6 col-md-4">
+	                 <form id="newForm">
+	                     <p><input type="text" name="Name" id="nameIN" placeholder="Name" required></p>
+			             <p><input type="text" name="Desc" id="descIN" placeholder="Description" required></p>
+			             <p><input type="text" name="Link" id="linkIN" placeholder="Link" required></p>
+			             <p><input type="button" id="sendIN" value="Form Bookmark"> <input type="button" id="editB" value="Edit"></p>	
+			         </form>
+		             </div>
+		         </div>
+	         </div>
+	     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script> 
+	function autoNumber(){
+		$('.table tr').each(function(i) {
+//var number = i+1 ;
+$(this).find('td:first').text(i);
+});
+	}
+         $(document).ready(function() {
+			 var bookmarks = [{Name:"Google", Desk:"Search", Link:"https://www.google.com.ua"},{Name:"YouTube", Desk:"Video", Link:"https://www.youtube.com"},{Name:"Wikipedia", Desk:"Science", Link:"https://uk.wikipedia.org"}];
+			 
+			 for (var i = 0; i < bookmarks.length; i++) {
+			 
+  var element = "<tr><td></td>" + "<th>" + bookmarks[i].Name + "</th>"+
+                "<th>" + bookmarks[i].Desk + "</th>"+
+                "<th> <a href='" + bookmarks[i].Link + "'>"+bookmarks[i].Link+"<th></th></th></tr>";
+				//"<th><button class='del'>Delete</button></th></tr>";
+  
+  $("#bookmarks").append(element);
+  autoNumber();
+}
+  $(document).on("click","#sendIN",function(event) {
+ //event.preventDefault();
+  //event.preventDefault();
+    //if($("#idInput").val()==0){
+    bookmarks.push({/*id:4,*/ Name:$("#nameIN").val(), Desk:$("#descIN").val(), Link:$("#linkIN").val()});
+ 
+	//console.log(bookmarks.length);
+	 for (var i = 0; i < bookmarks.length; i++) {
+	var a = "<tr><td></td>" + "<th>" + bookmarks[i].Name + "</th>"+
+                "<th>" + bookmarks[i].Desk + "</th>"+
+                "<th> <a href='" + bookmarks[i].Link + "'>"+bookmarks[i].Link+"</th>"+
+				"<td><button class='del'>Delete</button></td>";
+	/*var l = $("table tr").length;
+                for(var j=2; j<=l; j++){
+                  $('.table tbody tr').each(function(j) {
+                    $(this).find('td:first').text(j);
+                  });
+                }*/
+    //else{
+	$('#newForm').trigger( 'reset' );}
+	$("#bookmarks").append(a);
+	//$("#sendIN")[0].reset();
+autoNumber();
+});
+  
+	
+	
+        $(document).on("click", ".del", function(e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            autoNumber();
+			
+        });
+    
+		
+   $(document).on("click", "#editB", function(event) {
+		$('th').click(function(e)	{
+		
+		var t = e.target; 
+		
+		var elm_name = t.tagName.toLowerCase();
+		
+		if(elm_name == 'input')	{return false;}
+		var val = $(this).html();
+		var code = '<input type="text" id="edit" value="'+val+'" />';
+		$(this).empty().append(code);
+		$('#edit').focus();
+		$('#edit').blur(function()	{
+			var val = $(this).val();
+			$(this).parent().empty().html(val);
+		});
+	});
+        });
+		$(window).keydown(function(event){
+	
+	if(event.keyCode == 13) {	
+		$('#edit').blur();	
+	}
+});
+		
+  });
+</script>
+</body>
+</html>
